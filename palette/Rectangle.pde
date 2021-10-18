@@ -7,7 +7,7 @@ public class Rectangle extends Forme {
   int longueur;
   
   public Rectangle(Point p) {
-    super(p);
+    super(p, "Rectangle");
     this.longueur=60;
   }
    

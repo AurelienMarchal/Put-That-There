@@ -27,7 +27,7 @@ void setup() {
   sketch_icon = loadImage("Palette.jpg");
   surface.setIcon(sketch_icon);
   
-  formes = new ArrayList(); // nous créons une liste vide
+  formes = new ArrayList();
   noStroke();
   
   mae = FSM.INITIAL;
@@ -62,28 +62,7 @@ void setup() {
              println(c.label);
            }
         }
-
         
-        /*  
-        if (args[0].contains("ADD")){
-          if (args[0].contains("CROISSANT")){
-            mylist.add("croiss");
-          }else if (args[0].contains("CHOCO")){
-            mylist.add("choco");
-          }else if (args[0].contains("GRAPE")){
-            mylist.add("grape");
-          }
-        }else if (args[0].contains("DELETE")){
-          if (args[0].contains("CROISSANT")){
-            mylist.remove("croiss");
-          }else if (args[0].contains("CHOCO")){
-            mylist.remove("choco");
-          }else if (args[0].contains("GRAPE")){
-            mylist.remove("grape");
-          }
-          
-        }
-        */
         message = "Vous avez prononcé les concepts : " + args[0] + " avec un taux de confiance de " + args[1];
         mae = FSM.FORME;
         System.out.println(message);      

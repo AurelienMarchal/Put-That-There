@@ -1,5 +1,5 @@
 public enum Couleur {
-  BLEU("BLEU"), /* Etat Initial */ 
+  BLEU("BLEU", color(0, 200, 0)), /* Etat Initial */ 
   ROUGE("ROUGE"),
   VERT("VERT"),
   JAUNE("JAUNE"),
@@ -9,8 +9,10 @@ public enum Couleur {
   
   
    public final String label;
+   public final color value;
 
-    private Couleur(String label) {
+    private Couleur(String label, color value) {
         this.label = label;
+        this.value = value;
     }
 }

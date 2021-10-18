@@ -7,14 +7,16 @@
 abstract class Forme {
  Point origin;
  color c;
+ String label;
  
- Forme(Point p) {
+ Forme(Point p, String label) {
+   this.label = label;
    this.origin=p;
    this.c = color(127);
  }
  
  void setColor(color c) {
-   this.c=c;
+   this.c = c;
  }
  
  color getColor(){
