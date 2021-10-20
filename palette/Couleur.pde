@@ -1,18 +1,17 @@
 public enum Couleur {
-  BLEU("BLEU", color(0, 200, 0)), /* Etat Initial */ 
-  ROUGE("ROUGE"),
-  VERT("VERT"),
-  JAUNE("JAUNE"),
-  VIOLET("VIOLET"),
-  NOIR("NOIR"),
-  ORANGE("ORANGE");
-  
+  BLEU("BLEU", "0000ff"),
+  ROUGE("ROUGE", "ff0000"),
+  VERT("VERT", "00ff00"),
+  JAUNE("JAUNE", "ffff00"),
+  VIOLET("VIOLET", "ff00ff"),
+  NOIR("NOIR", "000000"),
+  ORANGE("CYAN", "00ffff");
   
    public final String label;
-   public final color value;
+   public final String xValue;
 
-    private Couleur(String label, color value) {
+    private Couleur(String label, String xValue) {
         this.label = label;
-        this.value = value;
+        this.xValue = xValue;
     }
 }

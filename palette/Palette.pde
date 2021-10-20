@@ -59,6 +59,16 @@ void setup() {
         
         for(Couleur c : couleurs){
           if(args[0].contains(c.label)){
+             Forme f = new Cercle(new Point(0,0));
+             f.setColor(color(unhex(c.xValue)));
+             formes.add(f);
+           }
+        }
+        
+        Commande[] commandes = Commande.values();
+        
+        for(Commande c : commandes){
+          if(args[0].contains(c.label)){
              println(c.label);
            }
         }
@@ -99,6 +109,7 @@ void setup() {
 void draw() {
   
   background(0);
+  affiche();
   //println("MAE : " + mae + " indice forme active ; " + indice_forme);
   /*
   

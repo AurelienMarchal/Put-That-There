@@ -5,9 +5,7 @@ enum Commande{
   public final String label;
 
     private Commande(String label) {
-        this.label = label;  
-    
-  
+        this.label = label;
   }
 
 }
