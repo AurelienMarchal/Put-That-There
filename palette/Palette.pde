@@ -18,7 +18,6 @@ ArrayList<Forme> formes; // liste de formes stockées
 
 Forme formeToDraw = null;
 
-
 FSM mae; // Finite Sate Machine
 int indice_forme;
 PImage sketch_icon;
@@ -101,7 +100,9 @@ void setup() {
         
         for(Commande c : commandes){
           if(args[0].contains(c.label)){
-             println(c.label);
+             if (c.label.equals("")){
+             
+             }
            }
         }
         
