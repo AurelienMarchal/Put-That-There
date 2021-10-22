@@ -59,9 +59,10 @@ void setup() {
         
         for(Couleur c : couleurs){
           if(args[0].contains(c.label)){
-             Forme f = new Cercle(new Point(0,0));
-             f.setColor(color(unhex(c.xValue)));
-             formes.add(f);
+             Forme f = new Cercle(new Point(width/2,height/2));
+             f.setColor(color(c.xValue));
+             formes.add(f); 
+             println(c.label);
            }
         }
         
@@ -108,8 +109,11 @@ void setup() {
 
 void draw() {
   
-  background(0);
+  background(255);
+ 
   affiche();
+
+  
   //println("MAE : " + mae + " indice forme active ; " + indice_forme);
   /*
   
@@ -133,8 +137,9 @@ void draw() {
 
 // fonction d'affichage des formes m
 void affiche() {
-  background(255);
   /* afficher tous les objets */
-  for (int i=0;i<formes.size();i++) // on affiche les objets de la liste
-    (formes.get(i)).update();
+  //println(formes.size());
+  for (int i = 0; i < formes.size(); i++){
+      formes.get(i).update();
+    }
 }
