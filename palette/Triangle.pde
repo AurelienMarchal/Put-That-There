@@ -5,7 +5,7 @@
 public class Triangle extends Forme {
   Point A, B,C;
   public Triangle(Point p) {
-    super(p, "Triangle");
+    super(p);
     // placement des points
     A = new Point();    
     A.setLocation(p);

@@ -14,6 +14,11 @@ Ivy bus;
 PFont f;
 String message= "";
 ArrayList<Forme> formes; // liste de formes stockées
+
+
+Forme formeToDraw = null;
+
+
 FSM mae; // Finite Sate Machine
 int indice_forme;
 PImage sketch_icon;
@@ -39,11 +44,31 @@ void setup() {
     bus = new Ivy("sra_tts_bridge", " sra_tts_bridge is ready", null);
     bus.start("127.255.255.255:2010");
     
-    bus.bindMsg("^sra5 Text=(.*) Confidence=.*", new IvyMessageListener()
+    
+    bus.bindMsg("^OneDollarIvy Template=(.*) Confidence=.*", new IvyMessageListener()
     {
       public void receive(IvyClient client,String[] args)
       {
-        message = "Vous avez dit : " + args[0];
+        
+        Point p = new Point(width/2, height/2);
+        
+        if(args[0].contains("CERCLE")){
+          formeToDraw = new Cercle(p);
+        }
+        
+        if(args[0].contains("TRIANGLE")){
+          formeToDraw = new Triangle(p);
+        }
+        
+        if(args[0].contains("LOSANGE")){
+          formeToDraw = new Losange(p);
+        }
+        
+        if(args[0].contains("RECTANGLE")){
+          formeToDraw = new Rectangle(p);
+        }
+        
+        message = "Vous avez dessiné : " + args[0];
         System.out.println(message);
         mae = FSM.ACTION;
       }        
@@ -59,10 +84,16 @@ void setup() {
         
         for(Couleur c : couleurs){
           if(args[0].contains(c.label)){
-             Forme f = new Cercle(new Point(width/2,height/2));
-             f.setColor(color(c.xValue));
-             formes.add(f); 
-             println(c.label);
+            if(formeToDraw != null){
+               formeToDraw.setColor(color(c.xValue, 64));
+               
+            }
+            else{
+              if (formes.size() > 0){
+                Forme f = formes.get(formes.size() - 1);
+                f.setColor(color(c.xValue));
+              }
+            }
            }
         }
         
@@ -77,6 +108,7 @@ void setup() {
         message = "Vous avez prononcé les concepts : " + args[0] + " avec un taux de confiance de " + args[1];
         mae = FSM.FORME;
         System.out.println(message);      
+        
       }
    });
     
@@ -100,19 +132,28 @@ void setup() {
 
   
   
-  
-  
-  
-  
-  
-
+ void mousePressed(){
+   if(formeToDraw != null){
+     formeToDraw.setAlpha(255);
+     formes.add(formeToDraw);
+     formeToDraw = null;
+   }
+   
+ }
+ 
 
 void draw() {
   
-  background(255);
- 
+  background(0);
   affiche();
-
+  
+  if(formeToDraw != null){
+    formeToDraw.setLocation(new Point(mouseX, mouseY));
+    formeToDraw.update();
+  }
+  
+  
+  
   
   //println("MAE : " + mae + " indice forme active ; " + indice_forme);
   /*
@@ -137,9 +178,8 @@ void draw() {
 
 // fonction d'affichage des formes m
 void affiche() {
+  background(255);
   /* afficher tous les objets */
-  //println(formes.size());
-  for (int i = 0; i < formes.size(); i++){
-      formes.get(i).update();
-    }
+  for (int i=0;i<formes.size();i++) // on affiche les objets de la liste
+    (formes.get(i)).update();
 }

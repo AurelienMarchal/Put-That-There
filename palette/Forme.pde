@@ -9,8 +9,7 @@ abstract class Forme {
  color c;
  String label;
  
- Forme(Point p, String label) {
-   this.label = label;
+ Forme(Point p) {
    this.origin=p;
    this.c = color(127);
  }
@@ -31,6 +30,10 @@ abstract class Forme {
  
  void setLocation(Point p) {
    this.origin = p;
+ }
+ 
+ void setAlpha(int alpha){
+   setColor(color(red(c), green(c), blue(c), alpha));
  }
  
  abstract boolean isClicked(Point p);

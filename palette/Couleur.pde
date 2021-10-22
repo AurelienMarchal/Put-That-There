@@ -5,8 +5,7 @@ public enum Couleur {
   JAUNE("JAUNE", #ffff00),
   VIOLET("VIOLET", #ff00ff),
   NOIR("NOIR", #000000),
-  CYAN("CYAN", #00ffff),
-  ORANGE("ORANGE", #ff7f00);
+  ORANGE("CYAN", #00ffff);
   
    public final String label;
    public final int xValue;
