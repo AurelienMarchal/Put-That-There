@@ -21,6 +21,7 @@ Forme formeToDraw = null;
 FSM mae; // Finite Sate Machine
 int indice_forme;
 PImage sketch_icon;
+IconDisplay iconDisplay;
 
 
 void setup() {
@@ -31,11 +32,14 @@ void setup() {
   sketch_icon = loadImage("Palette.jpg");
   surface.setIcon(sketch_icon);
   
+  iconDisplay = new IconDisplay(new Point(0, 0), true);
+  
   formes = new ArrayList();
   noStroke();
   
   mae = FSM.INITIAL;
   indice_forme = -1;
+  
   
   
    try
@@ -69,7 +73,6 @@ void setup() {
         
         message = "Vous avez dessiné : " + args[0];
         System.out.println(message);
-        mae = FSM.ACTION;
       }        
     });
     
@@ -100,14 +103,19 @@ void setup() {
         
         for(Commande c : commandes){
           if(args[0].contains(c.label)){
-             if (c.label.equals("")){
-             
+            if (mae.equals(FSM.INITIAL)){
+             if (c.equals(Commande.Creer)){
+                  mae = FSM.CREER;
+                  iconDisplay.setState(mae);
+               }
+               if (c.equals(Commande.Deplacer)){
+                  mae = FSM.DEPLACER;
+               }
              }
            }
         }
         
         message = "Vous avez prononcé les concepts : " + args[0] + " avec un taux de confiance de " + args[1];
-        mae = FSM.FORME;
         System.out.println(message);      
         
       }
@@ -147,6 +155,8 @@ void draw() {
   
   background(0);
   affiche();
+  iconDisplay.display();
+  println(mae);
   
   if(formeToDraw != null){
     formeToDraw.setLocation(new Point(mouseX, mouseY));

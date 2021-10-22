@@ -1,6 +1,6 @@
 enum Commande{
-  Creer("Creer"),
-  Deplacer("Deplacer");
+  Creer("CREER"),
+  Deplacer("DEPLACER");
   
   public final String label;
 

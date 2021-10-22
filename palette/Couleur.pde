@@ -7,11 +7,11 @@ public enum Couleur {
   NOIR("NOIR", #000000),
   ORANGE("CYAN", #00ffff);
   
-   public final String label;
-   public final int xValue;
+  public final String label;
+  public final int xValue;
 
-    private Couleur(String label, int xValue) {
-        this.label = label;
-        this.xValue = xValue;
-    }
+  private Couleur(String label, int xValue) {
+      this.label = label;
+      this.xValue = xValue;
+  }
 }
