@@ -4,7 +4,7 @@
  * (c) 05/11/2019
  * Dernière révision : 28/04/2020
  */
- 
+
 import java.awt.Point;
 import fr.dgac.ivy.*;
 
@@ -53,26 +53,37 @@ void setup() {
       public void receive(IvyClient client,String[] args)
       {
         
-        Point p = new Point(width/2, height/2);
+        switch(mae){
+          case CREER: 
+            Point p = new Point(width/2, height/2);
         
-        if(args[0].contains("CERCLE")){
-          formeToDraw = new Cercle(p);
+            if(args[0].contains("CERCLE")){
+              formeToDraw = new Cercle(p);
+            }
+            
+            if(args[0].contains("TRIANGLE")){
+              formeToDraw = new Triangle(p);
+            }
+            
+            if(args[0].contains("LOSANGE")){
+              formeToDraw = new Losange(p);
+            }
+            
+            if(args[0].contains("RECTANGLE")){
+              formeToDraw = new Rectangle(p);
+            }
+            
+            message = "Vous avez dessiné : " + args[0];
+            System.out.println(message);
+                break;
+          
+          
+          default
+            :break;
         }
         
-        if(args[0].contains("TRIANGLE")){
-          formeToDraw = new Triangle(p);
-        }
         
-        if(args[0].contains("LOSANGE")){
-          formeToDraw = new Losange(p);
-        }
         
-        if(args[0].contains("RECTANGLE")){
-          formeToDraw = new Rectangle(p);
-        }
-        
-        message = "Vous avez dessiné : " + args[0];
-        System.out.println(message);
       }        
     });
     
@@ -82,6 +93,29 @@ void setup() {
       public void receive(IvyClient client, String[] args)
       
       {
+        
+        switch(mae){
+          case INITIAL:
+            Commande[] commandes = Commande.values();
+            
+            for(Commande c : commandes){
+              if(args[0].contains(c.label)){
+               if (c.equals(Commande.Creer)){
+                  mae = FSM.CREER;
+                  iconDisplay.setState(mae);
+               }
+               if (c.equals(Commande.Deplacer)){
+                  mae = FSM.DEPLACER;
+                  iconDisplay.setState(mae);
+               }
+              }
+            }
+            break;
+          
+          default:
+            break;
+        
+        
         Couleur[] couleurs = Couleur.values();
         
         for(Couleur c : couleurs){
@@ -99,21 +133,7 @@ void setup() {
            }
         }
         
-        Commande[] commandes = Commande.values();
         
-        for(Commande c : commandes){
-          if(args[0].contains(c.label)){
-            if (mae.equals(FSM.INITIAL)){
-             if (c.equals(Commande.Creer)){
-                  mae = FSM.CREER;
-                  iconDisplay.setState(mae);
-               }
-               if (c.equals(Commande.Deplacer)){
-                  mae = FSM.DEPLACER;
-               }
-             }
-           }
-        }
         
         message = "Vous avez prononcé les concepts : " + args[0] + " avec un taux de confiance de " + args[1];
         System.out.println(message);      

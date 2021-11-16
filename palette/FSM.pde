@@ -9,11 +9,11 @@ public enum FSM {
   CREER(new String[][] {{"icons/drawing.png", "icons/shapes.png" }}),
   DEPLACER(null),
   D_FORMER(null),
-  D_COULEURR(null),
-  D_POSITIONR(null),
+  D_COULEUR(null),
+  D_POSITION(null),
   C_FORMER(null),
-  C_COULEURR(null),
-  C_POSITIONR(null);
+  C_COULEUR(new String[][] {{"icons/voice.png", "color-wheel/shapes.png" }}),
+  C_POSITION(null);
  
   
   public String[][] icons;
@@ -22,4 +22,5 @@ public enum FSM {
  private FSM(String[][] icons){
    this.icons = icons;
  }
+
 }
