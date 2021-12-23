@@ -24,7 +24,7 @@ FSM last_mae;
 int indice_forme;
 PImage sketch_icon;
 IconDisplay iconDisplay;
-
+ErrorMessageDisplay errorMessageDisplay;
 
 ControlP5 cp5;
 
@@ -39,6 +39,8 @@ void setup() {
   surface.setIcon(sketch_icon);
   
   iconDisplay = new IconDisplay(new Point(0, 0), true);
+  errorMessageDisplay = new ErrorMessageDisplay(new Point(400, 400));
+  
   
   formes = new ArrayList();
   noStroke();
@@ -137,8 +139,13 @@ void setup() {
                if (c.equals(Commande.Creer)){
                   mae = FSM.CREER;
                }
-               if (c.equals(Commande.Deplacer) && formes.size() != 0){
-                  mae = FSM.DEPLACER;
+               if (c.equals(Commande.Deplacer)){
+                 if(formes.size() == 0){
+                   errorMessageDisplay.setMessage("Il n'y a aucune forme a deplacer");
+                 }
+                 else{
+                   mae = FSM.DEPLACER;
+                 }
                }
               }
             }
@@ -224,6 +231,7 @@ void draw() {
   background(0);
   affiche();
   iconDisplay.display();
+  errorMessageDisplay.display();
   //println(mae);
   
   if(formeToDraw != null){
@@ -237,7 +245,8 @@ void draw() {
     last_mae = mae;
   }
   
-  println(minConfidence);
+  //errorMessageDisplay.setMessage("Test");
+  
 }
 
 // fonction d'affichage des formes m
