@@ -11,11 +11,14 @@
           xml:lang="fr-FR" root="Speech_Recognition" tag-format="semantics/1.0">
 
 	<rule id="Speech_Recognition" scope="public">
-		<item> <ruleref uri="#action"/> <tag> out.action = rules.action </tag></item>
-		<item repeat="0-1"> <ruleref uri="#pointage"/> <tag> out.pointage = rules.pointage </tag></item>
-		<item repeat="0-1"> <ruleref uri="#forme"/> <tag> out.forme = rules.forme </tag></item>
-		<item repeat="0-1"> <ruleref uri="#couleur"/> <tag> out.couleur = rules.couleur </tag></item>
-		<item repeat="0-1"> <ruleref uri="#localisation"/> <tag> out.localisation = rules.localisation</tag></item>
+		<one-of>
+			<item> <ruleref uri="#action"/> <tag> out.action = rules.action </tag></item>
+			<item> <ruleref uri="#pointage"/> <tag> out.pointage = rules.pointage </tag></item>
+			<item> <ruleref uri="#forme"/> <tag> out.forme = rules.forme </tag></item>
+			<item> <ruleref uri="#couleur"/> <tag> out.couleur = rules.couleur </tag></item>
+			<item> <ruleref uri="#localisation"/> <tag> out.localisation = rules.localisation</tag></item>
+			
+		</one-of>
 		<ruleref special="GARBAGE"/>
 		
 		<tag> out = "action=" + out.action + " where=" + out.pointage + " form=" + out.forme + " color=" + out.couleur + " localisation=" + out.localisation </tag> 
