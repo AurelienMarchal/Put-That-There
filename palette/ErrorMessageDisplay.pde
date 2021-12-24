@@ -6,6 +6,7 @@ class ErrorMessageDisplay{
   int timer;
   int displayTime = 100;
   color col = color(255, 0, 0);
+  PFont font = createFont("Georgia", 32);
   
 
   public ErrorMessageDisplay(Point point){
@@ -26,10 +27,11 @@ class ErrorMessageDisplay{
       currentMessage = null;
     }
     else if (currentMessage != null){
-      textSize(messageSize);
+      textFont(font, messageSize);
       textAlign(CENTER);
-      text(currentMessage, (int)(this.point.getX()), (int)this.point.getY());
       fill(col, timer*256/displayTime);
+      text(currentMessage, (int)(this.point.getX()), (int)this.point.getY());
+      
       timer --;
     }
   }

@@ -15,7 +15,7 @@ Ivy bus;
 PFont f;
 String message= "";
 ArrayList<Forme> formes; // liste de formes stockées
-
+ArrayList<Forme> formesToDeplacer;
 
 Forme formeToDraw = null;
 
@@ -38,11 +38,14 @@ void setup() {
   sketch_icon = loadImage("Palette.jpg");
   surface.setIcon(sketch_icon);
   
-  iconDisplay = new IconDisplay(new Point(0, 0), true);
+  iconDisplay = new IconDisplay(new Point(8, 8), true);
   errorMessageDisplay = new ErrorMessageDisplay(new Point(400, 400));
   
   
   formes = new ArrayList();
+  formesToDeplacer = new ArrayList();
+  //test 
+  //formes.add(new Losange(new Point(100, 100)));
   noStroke();
   
   mae = FSM.INITIAL;
@@ -81,11 +84,13 @@ void setup() {
     {
       public void receive(IvyClient client,String[] args)
       {
-        
+        Point p = new Point(width/2, height/2);
+        boolean found = true;
         switch(mae){
-          case CREER: 
-            Point p = new Point(width/2, height/2);
-            boolean found = true;
+          
+          case CREER:
+            
+            
             if(args[0].contains("CERCLE")){
               formeToDraw = new Cercle(p);
             }
@@ -112,6 +117,74 @@ void setup() {
             message = "Vous avez dessiné : " + args[0];
             System.out.println(message);
             break;
+            
+          case DEPLACER:
+           found = false;
+           formesToDeplacer.clear();
+           Forme tempForme = null;
+           int count = 0;
+            if(args[0].contains("CERCLE")){
+              for (int i=0;i<formes.size();i++){
+                if (formes.get(i) instanceof Cercle){
+                  found = true;
+                  tempForme = formes.get(i);
+                  formesToDeplacer.add(formes.get(i));
+                  count ++;
+                }
+              }
+            }
+            
+            else if(args[0].contains("TRIANGLE")){
+              
+              for (int i=0;i<formes.size();i++){
+                if (formes.get(i) instanceof Triangle){
+                  found = true;
+                  tempForme = formes.get(i);
+                  formesToDeplacer.add(formes.get(i));
+                  count ++;
+                }
+              }
+              
+            }
+            
+            else if(args[0].contains("LOSANGE")){
+              for (int i=0;i<formes.size();i++){
+                if (formes.get(i) instanceof Losange){
+                  found = true;
+                  tempForme = formes.get(i);
+                  formesToDeplacer.add(formes.get(i));
+                  count ++;
+                }
+              }
+            }
+            
+            else if(args[0].contains("RECTANGLE")){
+              for (int i=0;i<formes.size();i++){
+                if (formes.get(i) instanceof Rectangle){
+                  found = true;
+                  tempForme = formes.get(i);
+                  formesToDeplacer.add(formes.get(i));
+                  count ++;
+                }
+              }
+
+            }
+            else{
+              found = false;
+            }
+            
+            if(found){
+              if(count > 1){
+                mae = FSM.D_FORME;
+              }
+              else{
+                mae = FSM.D_COULEUR;
+                formeToDraw = tempForme;
+                formeToDraw.setAlpha(64);
+                formes.remove(tempForme);
+              }
+            }
+            break;
           
           
           default:
@@ -129,7 +202,7 @@ void setup() {
       public void receive(IvyClient client, String[] args)
       
       {
-        
+        Couleur[] couleurs = Couleur.values();
         switch(mae){
           case INITIAL:
             Commande[] commandes = Commande.values();
@@ -152,9 +225,8 @@ void setup() {
             break;
            
           case C_COULEUR:
+          case D_COULEUR:
           case C_FORME:
-            Couleur[] couleurs = Couleur.values();
-        
             for(Couleur c : couleurs){
               if(args[0].contains(c.label)){
                 if(formeToDraw != null){
@@ -172,7 +244,40 @@ void setup() {
             
             
             break;
-          
+
+          case D_FORME:
+            
+        
+            for(Couleur c : couleurs){
+              if(args[0].contains(c.label)){
+                for (int i=0;i<formesToDeplacer.size();i++){ // on affiche les objets de la liste
+                  if (formesToDeplacer.get(i).getColor() == color(c.xValue)){
+                    if(formeToDraw == null){
+                      formeToDraw = formesToDeplacer.get(i);
+                      formeToDraw.setAlpha(64);
+                      mae = FSM.C_COULEUR;
+                    }
+                  }
+                 }
+                
+                
+                
+                if(formeToDraw != null){
+                   formeToDraw.setColor(color(c.xValue, 64));
+                   mae = FSM.C_COULEUR;
+                }
+                else{
+                  if (formes.size() > 0){
+                    Forme f = formes.get(formes.size() - 1);
+                    f.setColor(color(c.xValue));
+                  }
+                }
+              }
+            }
+            
+            
+            break;
+
           default:
             break;
         
@@ -190,7 +295,9 @@ void setup() {
     {
       public void receive(IvyClient client,String[] args)
       {
-        message = "Malheureusement, je ne vous ai pas compris"; 
+        message = "Malheureusement, je ne vous ai pas compris";
+        errorMessageDisplay.setMessage(message);
+        
       }        
     });
     
@@ -208,6 +315,7 @@ void setup() {
   
  void mousePressed(){
     switch(mae){
+      case D_COULEUR:
       case C_COULEUR:
         if(formeToDraw != null){
          formeToDraw.setAlpha(255);
@@ -222,6 +330,25 @@ void setup() {
          break;
    
     }
+    
+     for (int i=0;i<formes.size();i++){
+       if (formes.get(i).isClicked(new Point(mouseX, mouseY))){
+         switch(mae){
+          case DEPLACER:
+            if(formeToDraw == null){
+              formeToDraw = formes.get(i);
+              formeToDraw.setAlpha(64);
+              formes.remove(i);
+            }
+              
+            mae = FSM.D_COULEUR;
+            break;
+         
+           default:
+            break;
+         }
+       }
+     }
    
  }
  
@@ -253,6 +380,7 @@ void draw() {
 void affiche() {
   background(255);
   /* afficher tous les objets */
-  for (int i=0;i<formes.size();i++) // on affiche les objets de la liste
-    (formes.get(i)).update();
+  for (int i=0;i<formes.size();i++){ // on affiche les objets de la liste
+    formes.get(i).update();
+  }
 }
