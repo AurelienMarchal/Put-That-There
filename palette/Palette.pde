@@ -80,16 +80,17 @@ void setup() {
     bus.start("127.255.255.255:2010");
     
     
-    bus.bindMsg("^OneDollarIvy Template=(.*) Confidence=.*", new IvyMessageListener()
+    bus.bindMsg("^OneDollarIvy Template=(.*) Confidence=(.*)", new IvyMessageListener()
     {
       public void receive(IvyClient client,String[] args)
       {
-        
-        if(float(args[1]) < minConfidence){
-          System.out.println("Confidence : " +  parseFloat(args[1]) + " under Minimum confidence");
+        if(args.length < 2){
           return;
         }
-        
+        if(float(args[1].replace(',', '.')) < minConfidence){
+          System.out.println("Confidence : " +  float(args[1].replace(',', '.')) + " under Minimum confidence");
+          return;
+        }
         
         
         Point p = new Point(width/2, height/2);
@@ -210,11 +211,10 @@ void setup() {
       public void receive(IvyClient client, String[] args)
       
       {
-        if(float(args[1]) < minConfidence){
-          System.out.println("Confidence : " +  parseFloat(args[1]) + " under Minimum confidence");
+        if(float(args[1].replace(',', '.')) < minConfidence){
+          System.out.println("Confidence : " +  float(args[1].replace(',', '.')) + " under Minimum confidence");
           return;
         }
-        println(args[1]);
         Couleur[] couleurs = Couleur.values();
         switch(mae){
           case INITIAL:
