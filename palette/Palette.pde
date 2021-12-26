@@ -84,6 +84,14 @@ void setup() {
     {
       public void receive(IvyClient client,String[] args)
       {
+        
+        if(float(args[1]) < minConfidence){
+          System.out.println("Confidence : " +  parseFloat(args[1]) + " under Minimum confidence");
+          return;
+        }
+        
+        
+        
         Point p = new Point(width/2, height/2);
         boolean found = true;
         switch(mae){
@@ -202,6 +210,11 @@ void setup() {
       public void receive(IvyClient client, String[] args)
       
       {
+        if(float(args[1]) < minConfidence){
+          System.out.println("Confidence : " +  parseFloat(args[1]) + " under Minimum confidence");
+          return;
+        }
+        println(args[1]);
         Couleur[] couleurs = Couleur.values();
         switch(mae){
           case INITIAL:
