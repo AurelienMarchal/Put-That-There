@@ -180,6 +180,7 @@ void setup() {
             }
             else{
               found = false;
+              errorMessageDisplay.setMessage("Il n'y a aucun " + args[0]);
             }
             
             if(found){
@@ -263,28 +264,23 @@ void setup() {
         
             for(Couleur c : couleurs){
               if(args[0].contains(c.label)){
-                for (int i=0;i<formesToDeplacer.size();i++){ // on affiche les objets de la liste
+                boolean found = false;
+                for (int i=0;i<formesToDeplacer.size();i++){
                   if (formesToDeplacer.get(i).getColor() == color(c.xValue)){
                     if(formeToDraw == null){
                       formeToDraw = formesToDeplacer.get(i);
                       formeToDraw.setAlpha(64);
                       mae = FSM.C_COULEUR;
+                      found = true;
+                      
                     }
                   }
                  }
+                 if(!found){
+                   errorMessageDisplay.setMessage("La forme déssinée n'est pas présente dans la couleur " + c.label);
+                 }
+                 
                 
-                
-                
-                if(formeToDraw != null){
-                   formeToDraw.setColor(color(c.xValue, 64));
-                   mae = FSM.C_COULEUR;
-                }
-                else{
-                  if (formes.size() > 0){
-                    Forme f = formes.get(formes.size() - 1);
-                    f.setColor(color(c.xValue));
-                  }
-                }
               }
             }
             

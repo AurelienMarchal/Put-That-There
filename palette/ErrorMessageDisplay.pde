@@ -1,7 +1,7 @@
 class ErrorMessageDisplay{
   
   Point point;
-  int messageSize = 40;
+  int messageSize = 30;
   String currentMessage;
   int timer;
   int displayTime = 100;
